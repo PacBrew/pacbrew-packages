@@ -4,9 +4,9 @@ set -e
 
 b() {
 	pushd $1
-	rm -rf pkg src *.pkg.tar.gz
+	rm -rf pkg src *.pkg.tar.xz
 	pacbrew-makepkg -C -f
-	sudo pacbrew-pacman --noconfirm -U *.pkg.tar.gz
+	sudo pacbrew-pacman --noconfirm -U *.pkg.tar.xz
 	popd
 }
 

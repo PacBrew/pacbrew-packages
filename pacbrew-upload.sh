@@ -3,8 +3,8 @@
 set -e
 
 b() {
-    scp $1/*.pkg.tar.gz cpasjuste@mydedibox.fr:/var/www/pacbrew/packages/
-    pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $1/*.pkg.tar.gz
+    scp $1/*.pkg.tar.xz cpasjuste@mydedibox.fr:/var/www/pacbrew/packages/
+    pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $1/*.pkg.tar.xz
 }
 
 rm -rf pacbrew-repo
