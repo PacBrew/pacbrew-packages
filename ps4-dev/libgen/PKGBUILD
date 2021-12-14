@@ -1,0 +1,33 @@
+# Maintainer: cpasjuste <cpasjuste@gmail.com>
+
+pkgname=ps4-libgen
+pkgver=snapshot_2021_04_01_165149
+pkgrel=1
+pkgdesc='lib generator for ps4'
+arch=('any')
+url='https://github.com/orbisdev/orbis-libs-gen'
+license=('GNU GPL')
+options=(!strip libtool)
+source=("https://github.com/orbisdev/orbis-libs-gen/releases/download/$pkgver/lib_s.tar.gz")
+sha256sums=('107c062002a4b9b371680477374f2388bdf5f1edfbbec281bf71a17e57f55a65')
+depends=('ps4-binutils' 'ps4-clang')
+groups=('ps4-dev')
+
+build() {
+  cd lib_s
+  for i in *.S
+  do
+    /opt/pacbrew/ps4/toolchain/bin/clang --target=x86_64-scei-ps4 -nostdlib -m64 -c -o ${i%.S}.o $i
+    /opt/pacbrew/ps4/toolchain/bin/orbis-ld --eh-frame-hdr -Bshareable --enable-new-dtags -o ${i%.S}_stub.so ${i%.S}.o
+  done
+}
+
+package() {
+  mkdir -p ${pkgdir}/opt/pacbrew/ps4/toolchain/usr/lib
+  cd lib_s
+  ln -sf libSceLibcInternal_stub.so libc.so
+  ln -sf libSceLibcInternal_stub.so libm.so
+  ln -sf libSceLibcInternal_stub.so libdl.so
+  ln -sf libkernel_sys_stub.so libpthread.so
+  cp *.so ${pkgdir}/opt/pacbrew/ps4/toolchain/usr/lib
+}
