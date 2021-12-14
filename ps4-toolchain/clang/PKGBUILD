@@ -10,7 +10,7 @@ license=('GNU GPL')
 options=(!strip libtool)
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-project-$pkgver.src.tar.xz")
 sha256sums=('6075ad30f1ac0e15f07c1bf062c1e1268c241d674f11bd32cdf0e040c71f2bf3')
-groups=('ps4-dev')
+groups=('ps4-toolchain')
 
 build() {
   cd llvm-project-$pkgver.src

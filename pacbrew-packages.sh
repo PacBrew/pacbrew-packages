@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # dev
-b ps4-dev/binutils
-b ps4-dev/clang
-b ps4-dev/headers
-b ps4-dev/libgen
+b ps4-toolchain/binutils
+b ps4-toolchain/clang
+b ps4-toolchain/headers
+b ps4-toolchain/libgen
 

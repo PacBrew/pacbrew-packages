@@ -11,7 +11,7 @@ options=(!strip libtool)
 source=("https://github.com/orbisdev/orbis-libs-gen/releases/download/$pkgver/lib_s.tar.gz")
 sha256sums=('107c062002a4b9b371680477374f2388bdf5f1edfbbec281bf71a17e57f55a65')
 depends=('ps4-binutils' 'ps4-clang')
-groups=('ps4-dev')
+groups=('ps4-toolchain')
 
 build() {
   cd lib_s

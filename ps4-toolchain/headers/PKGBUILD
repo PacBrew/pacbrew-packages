@@ -10,7 +10,7 @@ license=('GNU GPL')
 options=(!strip libtool)
 source=("https://github.com/orbisdev/orbisdev-headers/archive/refs/heads/master.zip")
 sha256sums=('a702c819a0b1136835ef1f0aee891d11f0ae36bf51d222a58aa42d19f4429e04')
-groups=('ps4-dev')
+groups=('ps4-toolchain')
 
 package() {
   mkdir -p ${pkgdir}/opt/pacbrew/ps4/toolchain/usr

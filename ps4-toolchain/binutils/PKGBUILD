@@ -10,7 +10,7 @@ license=('GNU GPL')
 options=(!strip libtool)
 source=("https://mirror.cyberbits.eu/gnu/binutils/binutils-$pkgver.tar.bz2")
 sha256sums=('5b4bd2e79e30ce8db0abd76dd2c2eae14a94ce212cfc59d3c37d23e24bc6d7a3')
-groups=('ps4-dev')
+groups=('ps4-toolchain')
 
 build() {
   cd binutils-$pkgver
