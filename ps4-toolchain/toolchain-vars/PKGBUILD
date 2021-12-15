@@ -14,7 +14,7 @@ source=('ps4vars.sh' 'ps4sdk.mk' 'ps4sdklib.mk' 'ps4_elf_sce.mk' 'ps4_lib.mk')
 options=(!strip)
 
 sha256sums=(
-  'fcd51d4e76babe8c5af6660d3e7a524fdf28a9db8c7e885bc97ba08120bf6038' # ps4vars.sh
+  '72fb914789e604114048e40f30b33e7e012902c477b904cc9bb57c0b08fc345b' # ps4vars.sh
   'bbe5e29b512c3b4a05f6877c234265f07f7a76f67956e9fce426a64ab8498e64' # ps4sdk.mk
   '0b65b74223cc300dc60d5c20bc81a4cf2b8682932f90b9cb4abaf9520ba8d704' # ps4sdklib.mk
   '55f4359c821eea63a147b10bb0b34575b9f9067689dd1c243ada7998af1266a2' # ps4_elf_sce.mk
