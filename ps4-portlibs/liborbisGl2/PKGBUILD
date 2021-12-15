@@ -1,0 +1,33 @@
+# Maintainer: cpasjuste <cpasjuste@gmail.com>
+
+pkgname=ps4-liborbisGl2
+pkgver=7eaeb6848edd50586bff2b5d9f48bdb1eb4f64af
+pkgrel=1
+pkgdesc='orbisGl2 liborbis new graphic backend based on raylib'
+arch=('any')
+url='https://github.com/orbisdev/orbisdev-orbisGl2'
+license=('MIT')
+options=(!strip libtool staticlibs)
+source=("https://github.com/orbisdev/orbisdev-orbisGl2/archive/$pkgver.zip" "liborbisGl2.patch")
+sha256sums=(
+  'a94dc4f8ded508687aa4236cd92866e96852301b5a654240eedc96af2fd6b3f0'
+  'db387e9efe6653af0683a29210d62099fd81d3fa952966aa6ed49bc1a8ef60a2'
+)
+makedepends=('ps4-toolchain-vars')
+depends=('ps4-liborbis')
+groups=('ps4-portlibs')
+
+build() {
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
+  cd orbisdev-orbisGl2-$pkgver
+  patch -p1 -i $srcdir/liborbisGl2.patch
+  make
+}
+
+package() {
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
+  cd orbisdev-orbisGl2-$pkgver
+  mkdir -p "$pkgdir/${ORBISDEV}/usr/lib"
+  mkdir -p "$pkgdir/${ORBISDEV}/usr/include/orbis"
+  make DESTDIR="$pkgdir" install
+}

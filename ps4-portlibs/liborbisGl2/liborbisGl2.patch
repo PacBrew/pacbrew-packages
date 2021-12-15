@@ -1,0 +1,16 @@
+diff --git a/Makefile b/Makefile
+index cf20e0f..d3435e4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -18,8 +18,8 @@ $(OutPath)/$(TargetFile).a: $(ObjectFiles)
+ 	$(archive)
+ 
+ install:
+-	@cp $(OutPath)/$(TargetFile).a $(ORBISDEV)/usr/lib
+-	@cp include/orbisGl2.h $(ORBISDEV)/usr/include/orbis
+-	@cp include/orbisGl2raymath.h $(ORBISDEV)/usr/include/orbis
++	@cp $(OutPath)/$(TargetFile).a $(DESTDIR)$(ORBISDEV)/usr/lib
++	@cp include/orbisGl2.h $(DESTDIR)$(ORBISDEV)/usr/include/orbis
++	@cp include/orbisGl2raymath.h $(DESTDIR)$(ORBISDEV)/usr/include/orbis
+ 	@echo "$(TargetFile) Installed!"
+ 
