@@ -15,6 +15,7 @@ export NM=${ORBISDEV}/bin/orbis-nm
 export OBJCOPY=${ORBISDEV}/bin/orbis-objcopy
 export STRIP=${ORBISDEV}/bin/orbis-strip
 
+export PKG_CONFIG=${ORBISDEV}/usr/bin/orbis-pkg-config
 export PKG_CONFIG_PATH=${ORBISDEV}/usr/lib/pkgconfig
 export PATH=${ORBISDEV}/bin:${ORBISDEV}/usr/bin:$PATH
 
