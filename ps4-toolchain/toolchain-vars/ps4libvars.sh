@@ -24,6 +24,5 @@ export CFLAGS="${ARCH} -O2 -D__PS4__ -D__ORBIS__ -I${PORTLIBS_PREFIX}/include -i
 export CXXFLAGS="${CFLAGS}"
 export CPPFLAGS="${CFLAGS}"
 
-export LIBS="-lkernel_stub -lSceLibcInternal_stub"
 export LDFLAGS="${ARCH} -L${PORTLIBS_PREFIX}/lib -L${ORBISDEV}/lib -L${ORBISDEV}/usr/lib ${LIBS}"
-export LDFLAGS="${ORBISDEV}/usr/lib/crt0.o ${LDFLAGS} -T ${ORBISDEV}/usr/lib/linker.x -Wl,--dynamic-linker=/libexec/ld-elf.so.1 -Wl,--gc-sections -Wl,-z -Wl,max-page-size=0x4000 -Wl,-pie -Wl,--eh-frame-hdr"
+export LDFLAGS="-Wl,--gc-sections,--gc-keep-exported"

@@ -9,12 +9,13 @@ pkgdesc='helper scripts to set variables for ps4 toolchain'
 arch=('any')
 url='https://github.com/PacBrew'
 
-source=('ps4vars.sh' 'ps4sdk.mk' 'ps4sdklib.mk' 'ps4_elf_sce.mk' 'ps4_lib.mk')
+source=('ps4vars.sh' 'ps4libvars.sh' 'ps4sdk.mk' 'ps4sdklib.mk' 'ps4_elf_sce.mk' 'ps4_lib.mk')
 
 options=(!strip)
 
 sha256sums=(
-  '273f4e52e58b2cf51eb42ae67db4bfcb5a5856e6bc19578d112f3b6a1b6bc4ee' # ps4vars.sh
+  'aecccd0768e228ef4501cdbf5eff2836c8991e4af88fdda6d7c247e071b2ff7e' # ps4vars.sh
+  '625b9f8a2b9394a9ff867d53c46626044316f888e1f409525298c1d37570e945' # ps4libvars.sh
   'bbe5e29b512c3b4a05f6877c234265f07f7a76f67956e9fce426a64ab8498e64' # ps4sdk.mk
   '0b65b74223cc300dc60d5c20bc81a4cf2b8682932f90b9cb4abaf9520ba8d704' # ps4sdklib.mk
   '55f4359c821eea63a147b10bb0b34575b9f9067689dd1c243ada7998af1266a2' # ps4_elf_sce.mk
@@ -24,6 +25,7 @@ sha256sums=(
 package() {
   install -d "$pkgdir"/opt/pacbrew/ps4/toolchain/make/target
   install -Dm644 ps4vars.sh "$pkgdir"/opt/pacbrew/ps4/toolchain
+  install -Dm644 ps4libvars.sh "$pkgdir"/opt/pacbrew/ps4/toolchain
   install -Dm644 ps4sdk.mk "$pkgdir"/opt/pacbrew/ps4/toolchain/make
   install -Dm644 ps4sdklib.mk "$pkgdir"/opt/pacbrew/ps4/toolchain/make
   install -Dm644 ps4_elf_sce.mk "$pkgdir"/opt/pacbrew/ps4/toolchain/make/target
