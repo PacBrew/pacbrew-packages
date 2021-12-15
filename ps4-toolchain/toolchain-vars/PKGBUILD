@@ -3,15 +3,12 @@
 pkgname=ps4-toolchain-vars
 pkgver=1.0.0
 pkgrel=1
-
 pkgdesc='helper scripts to set variables for ps4 toolchain'
-
 arch=('any')
 url='https://github.com/PacBrew'
-
 source=('ps4vars.sh' 'ps4libvars.sh' 'ps4sdk.mk' 'ps4sdklib.mk' 'ps4_elf_sce.mk' 'ps4_lib.mk')
-
 options=(!strip)
+groups=('ps4-toolchain')
 
 sha256sums=(
   'aecccd0768e228ef4501cdbf5eff2836c8991e4af88fdda6d7c247e071b2ff7e' # ps4vars.sh
