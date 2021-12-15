@@ -8,6 +8,8 @@ b ps4-toolchain/libgen
 b ps4-toolchain/libcxx
 b ps4-toolchain/linker
 b ps4-toolchain/toolchain-vars
+b ps4-toolchain/pkg-config
 
 # portlibs
 b ps4-portlibs/zlib
+b ps4-portlibs/libpng
