@@ -17,12 +17,14 @@ groups=('ps4-portlibs')
 build() {
   cd libpng-$pkgver
 
-  source /opt/pacbrew/ps4/toolchain/ps4vars.sh lib
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
 
   sed -i 's/^bin_PROGRAMS = .*//' Makefile.in
 
-  ./configure --prefix="${PORTLIBS_PREFIX}" --host=x86_64 \
+  ./configure --prefix="${ORBISDEV}/usr" --host=x86_64 \
     --disable-shared --enable-static
+
+  make
 }
 
 package() {

@@ -17,14 +17,14 @@ makedepends=('ps4-toolchain-vars')
 groups=('ps4-portlibs')
 
 build() {
-  source /opt/pacbrew/ps4/toolchain/ps4vars.sh lib
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
   cd orbisdev-liborbis-$pkgver
   patch -p1 -i $srcdir/liborbis.patch
   make
 }
 
 package() {
-  source /opt/pacbrew/ps4/toolchain/ps4vars.sh lib
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
   cd orbisdev-liborbis-$pkgver
   make DESTDIR="$pkgdir" install
 }

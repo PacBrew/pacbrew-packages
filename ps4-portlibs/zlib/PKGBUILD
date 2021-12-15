@@ -14,23 +14,23 @@ makedepends=('ps4-toolchain-vars')
 groups=('ps4-portlibs')
 
 build() {
-  source /opt/pacbrew/ps4/toolchain/ps4vars.sh lib
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
   cd zlib-$pkgver
   
   # zlib
-  ./configure --prefix="${PORTLIBS_PREFIX}" --static
+  ./configure --prefix="${ORBISDEV}/usr" --static
   make libz.a # only build library, no programs
 
   # libminizip
   cd contrib/minizip
   autoreconf --force --verbose --install
   CFLAGS="${CFLAGS} -DUSE_FILE32API" \
-    ./configure --prefix="${PORTLIBS_PREFIX}" --host=x86_64 --disable-shared --enable-static
+    ./configure --prefix="${ORBISDEV}/usr" --host=x86_64 --disable-shared --enable-static
   make
 }
 
 package() {
-  source /opt/pacbrew/ps4/toolchain/ps4vars.sh lib
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
   cd zlib-$pkgver
   # zlib
   make DESTDIR="$pkgdir" install
