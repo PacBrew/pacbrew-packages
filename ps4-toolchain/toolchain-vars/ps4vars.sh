@@ -8,11 +8,13 @@ export PS4SDK=${PACBREW}/ps4/toolchain
 #export TOOL_PREFIX=orbis-
 export CC=${ORBISDEV}/bin/clang
 export CXX=${ORBISDEV}/bin/clang++
-export AS=${ORBISDEV}/bin/clang
+export AS=${ORBISDEV}/bin/orbis-as
 export LD=${ORBISDEV}/bin/orbis-ld
 export AR=${ORBISDEV}/bin/orbis-ar
 export RANLIB=${ORBISDEV}/bin/orbis-ranlib
 export NM=${ORBISDEV}/bin/orbis-nm
+export OBJCOPY=${ORBISDEV}/bin/orbis-objcopy
+export STRIP=${ORBISDEV}/bin/orbis-strip
 
 export PORTLIBS_PREFIX=${PACBREW}/ps4/portlibs
 export PATH=${PORTLIBS_PREFIX}/bin:$PATH
