@@ -9,6 +9,7 @@ b ps4-toolchain/libcxx
 b ps4-toolchain/linker
 b ps4-toolchain/toolchain-vars
 b ps4-toolchain/pkg-config
+b ps4-toolchain/lief
 
 # portlibs
 b ps4-portlibs/zlib
