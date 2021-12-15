@@ -1,0 +1,17 @@
+# Maintainer: cpasjuste <cpasjuste@gmail.com>
+
+pkgname=ps4-pkg-config
+pkgver=1.0.0
+pkgrel=1
+pkgdesc='pkg-config wrapper for ps4'
+arch=('any')
+url='https://github.com/PacBrew'
+source=('pkg-config.in')
+sha256sums=('4378de2a1c0a790102fd95290c0f6ca7e15cb2d7ffdb08913d97b2a783d3f280')
+depends=('ps4-clang')
+groups=('ps4-toolchain')
+
+package() {
+  install -d "$pkgdir"/opt/pacbrew/ps4/portlibs/bin
+  cp "$srcdir"/pkg-config.in "$pkgdir"/opt/pacbrew/ps4/portlibs/bin/orbis-pkg-config
+}
