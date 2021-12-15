@@ -13,6 +13,7 @@ sha256sums=(
   '6075ad30f1ac0e15f07c1bf062c1e1268c241d674f11bd32cdf0e040c71f2bf3'
   '1568708df697ee3ed954fca447c49c217a7aba1e1f227fef6e0fc1da43d49dcc'
 )
+depends=('ps4-clang')
 groups=('ps4-toolchain')
 
 build() {
