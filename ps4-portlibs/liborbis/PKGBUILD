@@ -1,0 +1,30 @@
+# Maintainer: cpasjuste <cpasjuste@gmail.com>
+
+pkgname=ps4-liborbis
+pkgver=89d6dc86b850839eca829d47ee70d532ba28f7fe
+pkgrel=1
+pkgdesc='liborbis base library for Orbis development'
+arch=('any')
+url='https://github.com/orbisdev/orbisdev-liborbis'
+license=('MIT')
+options=(!strip libtool staticlibs)
+source=("https://github.com/orbisdev/orbisdev-liborbis/archive/$pkgver.zip" "liborbis.patch")
+sha256sums=(
+  'fb1994a08542083522352bceb45d1013af86a1e5210ed16da07654ce8160176d'
+  'cf1cb8d26fb300cbd6483b5a471eec99437c56a3313182729141c40b7ca8c737'
+)
+makedepends=('ps4-toolchain-vars')
+groups=('ps4-portlibs')
+
+build() {
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh lib
+  cd orbisdev-liborbis-$pkgver
+  patch -p1 -i $srcdir/liborbis.patch
+  make
+}
+
+package() {
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh lib
+  cd orbisdev-liborbis-$pkgver
+  make DESTDIR="$pkgdir" install
+}
