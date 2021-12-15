@@ -17,6 +17,7 @@ export OBJCOPY=${ORBISDEV}/bin/orbis-objcopy
 export STRIP=${ORBISDEV}/bin/orbis-strip
 
 export PORTLIBS_PREFIX=${PACBREW}/ps4/portlibs
+export PKG_CONFIG_PATH=${PORTLIBS_PREFIX}/lib/pkgconfig
 export PATH=${PORTLIBS_PREFIX}/bin:$PATH
 
 export ARCH="--target=x86_64-scei-ps4"
@@ -24,5 +25,6 @@ export CFLAGS="${ARCH} -O2 -D__PS4__ -D__ORBIS__ -I${PORTLIBS_PREFIX}/include -i
 export CXXFLAGS="${CFLAGS}"
 export CPPFLAGS="${CFLAGS}"
 
-export LDFLAGS="${ARCH} -L${PORTLIBS_PREFIX}/lib -L${ORBISDEV}/lib -L${ORBISDEV}/usr/lib ${LIBS}"
+export LIBS="-L${ORBISDEV}/lib -L${ORBISDEV}/usr/lib -L${PORTLIBS_PREFIX}/lib"
+export LDFLAGS="${ARCH} ${LIBS}"
 export LDFLAGS="-Wl,--gc-sections,--gc-keep-exported"
