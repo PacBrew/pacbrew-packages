@@ -14,3 +14,4 @@ b ps4-toolchain/pkg-config
 b ps4-portlibs/zlib
 b ps4-portlibs/libpng
 b ps4-portlibs/liborbis
+b ps4-portlibs/liborbisGl
