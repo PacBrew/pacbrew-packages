@@ -1,0 +1,31 @@
+# Maintainer: cpasjuste <cpasjuste@gmail.com>
+
+pkgname=ps4-liblzma
+pkgver=5.2.5
+pkgrel=1
+pkgdesc='A compression library with an API similar to that of zlib'
+arch=('any')
+url='https://tukaani.org/xz/'
+license=('public domain')
+options=(!strip libtool staticlibs)
+groups=('ps4-portlibs')
+makedepends=('ps4-pkg-config' 'ps4-toolchain-vars')
+source=("https://tukaani.org/xz/xz-${pkgver}.tar.gz")
+sha256sums=('f6f4910fd033078738bd82bfba4f49219d03b17eb0794eb91efbae419f4aba10')
+
+build() {
+  cd xz-${pkgver}
+
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
+
+  ./configure --prefix="${ORBISDEV}/usr" --host=x86_64 \
+    --disable-shared --enable-static
+
+  cd src/liblzma
+  make
+}
+
+package() {
+  cd xz-${pkgver}/src/liblzma
+  make DESTDIR="${pkgdir}" install
+}
