@@ -5,23 +5,11 @@ set -e
 function build {
 	b() {
 		pushd $1
-		pacbrew-makepkg -f
-		sudo pacbrew-pacman --noconfirm -U *.pkg.tar.xz
-		popd
-	}
-
-	# build packages
-	. pacbrew-packages.sh
-}
-
-function build-clean {
-	b() {
-		pushd $1
 		pacbrew-makepkg -C -f
 		sudo pacbrew-pacman --noconfirm -U *.pkg.tar.xz
 		popd
 	}
-	
+
 	# build packages
 	. pacbrew-packages.sh
 }
@@ -45,17 +33,10 @@ function upload {
 	rm -rf pacbrew-repo
 }
 
-if [ "$1" == "build" ]; then
+if [ "$1" == "upload" ]; then
 	build
-elif [ "$1" == "build-clean" ]; then
-	build-clean
-elif [ "$1" == "build-upload" ]; then
-	build
-	upload
-elif [ "$1" == "build-clean-upload" ]; then
-	build-clean
 	upload
 else
-	echo "usage: $0 [build] [build-clean] [build-upload] [build-clean-upload]"
+	build
 fi
 
