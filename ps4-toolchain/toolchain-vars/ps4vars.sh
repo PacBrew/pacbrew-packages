@@ -21,8 +21,8 @@ export PATH=${ORBISDEV}/bin:${ORBISDEV}/usr/bin:$PATH
 
 export ARCH="--target=x86_64-scei-ps4"
 export CFLAGS="${ARCH} -O2 -D__PS4__ -D__ORBIS__ -I${ORBISDEV}/usr/include -isystem ${ORBISDEV} -isysroot ${ORBISDEV}"
-export CXXFLAGS="${CFLAGS}"
-export CPPFLAGS="${CFLAGS}"
+export CXXFLAGS="${CFLAGS} -I${ORBISDEV}/usr/include/c++/v1"
+export CPPFLAGS="${CFLAGS} -I${ORBISDEV}/usr/include/c++/v1"
 
 if [ "$1" == "elf" ]; then
   export LIBS="-L${ORBISDEV}/lib -L${ORBISDEV}/usr/lib -lkernel_stub -lSceLibcInternal_stub"
