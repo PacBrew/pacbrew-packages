@@ -19,3 +19,4 @@ b ps4-portlibs/liborbisGl
 b ps4-portlibs/liborbisGl2
 b ps4-portlibs/bzip2
 b ps4-portlibs/freetype
+b ps4-portlibs/libconfig
