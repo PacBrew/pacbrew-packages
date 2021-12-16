@@ -1,0 +1,40 @@
+# Maintainer:  cpasjuste <cpasjuste@gmail.com>
+
+pkgname=ps4-libjson-c
+pkgver=0.15
+pkgrel=1
+pkgdesc='A JSON implementation in C.'
+arch=('any')
+url="https://github.com/json-c/json-c/"
+license=('MIT')
+options=(!strip libtool staticlibs)
+source=("https://s3.amazonaws.com/json-c_releases/releases/json-c-${pkgver}.tar.gz" "json-c.patch")
+sha256sums=(
+  'b8d80a1ddb718b3ba7492916237bbf86609e9709fb007e7f7d4322f02341a4c6'
+  '18d660419299c9544de5fd9234b3616071d93c90e5ceedca2df610fc10d13136'
+)
+makedepends=('ps4-pkg-config' 'ps4-toolchain-vars')
+groups=('ps4-portlibs')
+
+build() {
+  cd json-c-$pkgver
+
+  source /opt/pacbrew/ps4/toolchain/ps4vars.sh
+
+  patch -p1 -i $srcdir/json-c.patch
+
+  mkdir build && cd build
+  
+  orbis-cmake -G"Unix Makefiles" \
+    -DCMAKE_INSTALL_PREFIX=$ORBISDEV/usr \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    ..
+
+  make
+}
+
+package() {
+  cd json-c-$pkgver/build
+  make install DESTDIR="$pkgdir"
+}

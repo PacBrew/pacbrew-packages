@@ -1,0 +1,32 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 99ab904..30b911b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -43,12 +43,12 @@ endif()
+ include(CTest)
+ 
+ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING AND
+-   (NOT MSVC OR NOT (MSVC_VERSION LESS 1800)) # Tests need at least VS2013
++   (NOT MSVC OR NOT (MSVC_VERSION LESS 1800) AND NOT PS4) # Tests need at least VS2013
+    )
+ add_subdirectory(tests)
+ endif()
+ 
+-if (NOT MSVC)  # cmd line apps don't built on Windows currently.
++if (NOT MSVC AND NOT PS4)  # cmd line apps don't built on Windows currently.
+ add_subdirectory(apps)
+ endif()
+ 
+diff --git a/snprintf_compat.h b/snprintf_compat.h
+index 76f7a6c..a0b92d9 100644
+--- a/snprintf_compat.h
++++ b/snprintf_compat.h
+@@ -13,7 +13,7 @@
+ 
+ #include <stdarg.h>
+ 
+-#if !defined(HAVE_SNPRINTF) && (defined(_MSC_VER) || defined(__MINGW32__))
++#if defined(__PS4__) || (!defined(HAVE_SNPRINTF) && (defined(_MSC_VER) || defined(__MINGW32__)))
+ static int json_c_vsnprintf(char *str, size_t size, const char *format, va_list ap)
+ {
+ 	int ret;
