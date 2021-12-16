@@ -11,7 +11,7 @@ options=(!strip)
 groups=('ps4-toolchain')
 
 sha256sums=(
-  '6d9c8ca025c7c007f029889d6bfdfb78a6a5bf79ebceb9087ad61a74389df1cd' # ps4vars.sh
+  'edaee158acc3ed1f1c1ee373191401e0562e1e2f3018edccc175a39bc8335596' # ps4vars.sh
   'bbe5e29b512c3b4a05f6877c234265f07f7a76f67956e9fce426a64ab8498e64' # ps4sdk.mk
   '0b65b74223cc300dc60d5c20bc81a4cf2b8682932f90b9cb4abaf9520ba8d704' # ps4sdklib.mk
   '55f4359c821eea63a147b10bb0b34575b9f9067689dd1c243ada7998af1266a2' # ps4_elf_sce.mk
