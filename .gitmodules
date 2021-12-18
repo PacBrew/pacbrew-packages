@@ -1,6 +1,0 @@
-[submodule "ps4-toolchain"]
-	path = ps4-toolchain
-	url = git@github.com:PacBrew/ps4-toolchain.git
-[submodule "ps4-portlibs"]
-	path = ps4-portlibs
-	url = git@github.com:PacBrew/ps4-portlibs.git
