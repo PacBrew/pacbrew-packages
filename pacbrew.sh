@@ -5,6 +5,7 @@ set -e
 function build {
   b() {
     pushd $1
+    rm -rf *.pkg.tar.xz
     pacbrew-makepkg -C -f
     sudo pacbrew-pacman --noconfirm -U *.pkg.tar.xz
     popd
@@ -16,6 +17,7 @@ function build {
   else
     # build specified package
     pushd $1
+    rm -rf *.pkg.tar.xz
     pacbrew-makepkg -C -f
     sudo pacbrew-pacman --noconfirm -U *.pkg.tar.xz
     popd

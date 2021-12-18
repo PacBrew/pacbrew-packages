@@ -1,25 +1,25 @@
 #!/bin/bash
 
 # toolchain
-b ps4-toolchain/binutils
-b ps4-toolchain/clang
-b ps4-toolchain/headers
-b ps4-toolchain/libgen
-b ps4-toolchain/libcxx
-b ps4-toolchain/linker
-b ps4-toolchain/toolchain-vars
-b ps4-toolchain/pkg-config
-b ps4-toolchain/lief
+b ps4-orbisdev/binutils
+b ps4-orbisdev/clang
+b ps4-orbisdev/headers
+b ps4-orbisdev/libcxx
+b ps4-orbisdev/linker
+b ps4-orbisdev/libgen
+b ps4-orbisdev/vars
+b ps4-orbisdev/pkg-config
+b ps4-orbisdev/lief
 
 # portlibs
-b ps4-portlibs/zlib
-b ps4-portlibs/libpng
-b ps4-portlibs/liborbis
-b ps4-portlibs/liborbisGl
-b ps4-portlibs/liborbisGl2
-b ps4-portlibs/bzip2
-b ps4-portlibs/freetype
-b ps4-portlibs/libconfig
-b ps4-portlibs/libjson-c
-b ps4-portlibs/liblzma
-b ps4-portlibs/tinyxml2
+b ps4-orbisdev-portlibs/zlib
+b ps4-orbisdev-portlibs/libpng
+b ps4-orbisdev-portlibs/bzip2
+b ps4-orbisdev-portlibs/liborbis
+b ps4-orbisdev-portlibs/liborbisGl
+b ps4-orbisdev-portlibs/liborbisGl2
+b ps4-orbisdev-portlibs/freetype
+b ps4-orbisdev-portlibs/libconfig
+b ps4-orbisdev-portlibs/libjson-c
+b ps4-orbisdev-portlibs/liblzma
+b ps4-orbisdev-portlibs/tinyxml2
