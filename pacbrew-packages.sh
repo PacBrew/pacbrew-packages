@@ -10,6 +10,8 @@ b ps4-orbisdev/libgen
 b ps4-orbisdev/vars
 b ps4-orbisdev/pkg-config
 b ps4-orbisdev/lief
+b ps4-orbisdev/tools
+b ps4-orbisdev/pkgtools
 
 # portlibs
 b ps4-orbisdev-portlibs/zlib
