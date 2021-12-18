@@ -49,10 +49,15 @@ function upload {
   rm -rf pacbrew-repo
 }
 
-if [ "$1" == "upload" ]; then
+if [ "$1" == "build" ]; then
+  build "$2"
+elif [ "$1" == "upload" ]; then
+  upload "$2"
+elif [ "$1" == "build-upload" ]; then
   build "$2"
   upload "$2"
 else
-  build "$1"
+  echo "usage: $0 build [path]"
+  echo "usage: $0 upload [path]"
+  echo "usage: $0 build-upload [path]"
 fi
-
