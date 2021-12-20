@@ -7,11 +7,13 @@ b ps4-orbisdev/headers
 b ps4-orbisdev/libcxx
 b ps4-orbisdev/linker
 b ps4-orbisdev/libgen
+b ps4-orbisdev/libgen-9.00
 b ps4-orbisdev/vars
 b ps4-orbisdev/pkg-config
 b ps4-orbisdev/lief
 b ps4-orbisdev/tools
 b ps4-orbisdev/pkgtools
+b ps4-orbisdev/gp4gen
 
 # portlibs
 b ps4-orbisdev-portlibs/zlib

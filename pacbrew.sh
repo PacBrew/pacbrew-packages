@@ -34,7 +34,7 @@ function upload {
   rm -rf pacbrew-repo
   mkdir -p pacbrew-repo
   # get repo files from server
-  scp mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
+  #scp mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
   if [ -z "$1" ]; then
     # update and upload all packages
     . pacbrew-packages.sh
