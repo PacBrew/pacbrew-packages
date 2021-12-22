@@ -42,6 +42,7 @@ jobs:
             -Dmakepkg-template-dir=/opt/pacbrew/usr/share/makepkg-template build
           ninja -C build
           ninja -C build install
+          sudo cp pacbrew/bin/* /usr/bin/
           
       # Install pacbrew-packages dependencies
       #- name: Install pacbrew-packages dependencies
