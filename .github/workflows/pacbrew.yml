@@ -29,7 +29,7 @@ jobs:
 
       # Install pacbrew-pacman dependencies
       - name: Install pacbrew-pacman dependencies
-        run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev gettext
+        run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev gettext libcurl4-openssl-dev libgpgme-dev libssl-dev
       
       # Build pacbrew-pacman
       - name: Build pacbrew-pacman
