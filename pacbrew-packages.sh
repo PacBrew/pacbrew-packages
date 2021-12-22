@@ -26,4 +26,5 @@ b ps4-orbisdev-portlibs/libconfig
 b ps4-orbisdev-portlibs/libjson-c
 b ps4-orbisdev-portlibs/liblzma
 b ps4-orbisdev-portlibs/tinyxml2
+b ps4-orbisdev-portlibs/libcurl
 b ps4-orbisdev-portlibs/glm
