@@ -27,7 +27,7 @@ jobs:
 
       # Install pacbrew-pacman dependencies
       - name: Install pacbrew-pacman dependencies
-        run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev
+        run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev gettext
       # Clone pacbrew-pacman
       
       # Install pacbrew-pacman
@@ -40,4 +40,11 @@ jobs:
             -Dmakepkg-template-dir=/opt/pacbrew/usr/share/makepkg-template build
           ninja -C build
           ninja -C build install
+          
+      # Install pacbrew-packages dependencies
+      #- name: Install pacbrew-packages dependencies
+      #  run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev gettext
 
+      # Build pacbrew-packages
+      - name: Build pacbrew-packages
+        run: pacbrew.sh build
