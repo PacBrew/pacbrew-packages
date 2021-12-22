@@ -27,7 +27,7 @@ jobs:
 
       # Install pacbrew-pacman dependencies
       - name: Install pacbrew-pacman dependencies
-        run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build
+        run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev
       # Clone pacbrew-pacman
       
       # Install pacbrew-pacman
