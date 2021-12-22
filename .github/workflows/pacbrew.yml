@@ -47,4 +47,6 @@ jobs:
 
       # Build pacbrew-packages
       - name: Build pacbrew-packages
-        run: pacbrew.sh build
+        run: |
+          cd $GITHUB_WORKSPACE
+          ./pacbrew.sh build
