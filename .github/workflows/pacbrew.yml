@@ -30,10 +30,9 @@ jobs:
       # Install pacbrew-pacman dependencies
       - name: Install pacbrew-pacman dependencies
         run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev gettext
-      # Clone pacbrew-pacman
       
-      # Install pacbrew-pacman
-      - name: Install pacbrew-pacman
+      # Build pacbrew-pacman
+      - name: Build pacbrew-pacman
         run: |
           git clone https://github.com/PacBrew/pacbrew-pacman.git
           cd pacbrew-pacman
@@ -45,8 +44,8 @@ jobs:
           sudo cp pacbrew/bin/* /usr/bin/
           
       # Install pacbrew-packages dependencies
-      #- name: Install pacbrew-packages dependencies
-      #  run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev gettext
+      - name: Install pacbrew-packages dependencies
+        run: sudo apt-get install -y libarchive-tools
 
       # Build pacbrew-packages
       - name: Build pacbrew-packages
