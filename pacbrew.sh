@@ -28,7 +28,6 @@ function install_remote_package {
 }
 
 function build_package {
-  echo -e "${COL_GREEN}build_package:${COL_NONE} building "$1""
   # build package
   pushd "$1" &> /dev/null
   rm -rf *.pkg.tar.xz &> /dev/null
@@ -49,13 +48,20 @@ function build_packages {
         ;;
       -u) echo -e "${COL_GREEN}build_packages${COL_NONE}: upload built packages => enabled"
           PACBREW_UPLOAD=true
-          # download repo files from server
-          rm -rf pacbrew-repo && mkdir -p pacbrew-repo
-          scp mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
+        ;;
+      -su) echo -e "${COL_GREEN}build_packages:${COL_NONE} build all packages => enabled"
+          PACBREW_SSH_USER=$1
         ;;
     esac
     shift
   done
+  
+  # download repo files from server, if needed
+  if [ $PACBREW_UPLOAD ]; then
+    echo -e "${COL_GREEN}build_packages:${COL_NONE} downloading pacbrew repo..."
+    rm -rf pacbrew-repo && mkdir -p pacbrew-repo
+    scp $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
+  fi
 
   while read line; do
     # skip empty lines and comments
@@ -79,18 +85,20 @@ function build_packages {
 
     # only build packages that are not available (version differ)
     if [ $PACBREW_BUILD_ALL ] || [ "$local_pkgverrel" != "$remote_pkgverrel" ]; then
-      echo -e "${COL_GREEN}build_packages:${COL_NONE} new package detected: $local_pkgname ($remote_pkgverrel => $local_pkgverrel)"
+      echo -e "${COL_GREEN}build_packages:${COL_NONE} new package: ${COL_GREEN}$local_pkgname${COL_NONE} ($remote_pkgverrel => $local_pkgverrel)"
+      echo -e "${COL_GREEN}build_packages:${COL_NONE} building ${COL_GREEN}$local_pkgname${COL_NONE} ($local_pkgverrel)"
       build_package "$line"
       # install built package
+      echo -e "${COL_GREEN}build_packages:${COL_NONE} installing package ${COL_GREEN}$line/*.pkg.tar.xz${COL_NONE}"
       install_local_package $line/*.pkg.tar.xz
       if [ $PACBREW_UPLOAD ]; then
-        echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading package: $local_pkgname"
-        scp $line/*.pkg.tar.xz mydedibox.fr:/var/www/pacbrew/packages/
+        echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading package ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
+        scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/
         pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz
       fi
     else
       # always install deps for later packges build
-      echo -e "${COL_GREEN}build_packages:${COL_NONE} package exist in database, installing: $local_pkgname"
+      echo -e "${COL_GREEN}build_packages:${COL_NONE} found in database, installing package ${COL_GREEN}$local_pkgname${COL_NONE}"
       install_remote_package "$local_pkgname"
     fi
 
@@ -98,10 +106,12 @@ function build_packages {
 
   # upload updated repo files and cleanup
   if [ $PACBREW_UPLOAD ]; then
-    echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading updated repo..."
-    scp pacbrew-repo/* mydedibox.fr:/var/www/pacbrew/packages/
+    echo -e "${COL_GREEN}build_packages:${COL_NONE} updating pacbrew repo with new packages..."
+    scp pacbrew-repo/* $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/
     rm -rf pacbrew-repo
   fi
+  
+  echo -e "${COL_GREEN}build_packages:${COL_NONE} all done !"
 }
 
 check_pacman
