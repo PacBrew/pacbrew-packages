@@ -3,28 +3,32 @@
 set -e
 
 PACBREW_PACMAN_URL="https://github.com/PacBrew/pacbrew-pacman/releases/download/pacbrew-release-1.0/pacbrew-pacman-1.0.deb"
+COL_GREEN='\033[0;32m'
+COL_NONE='\033[0m'
 
 function check_pacman {
-  echo "check_pacman..."
   if ! command -v pacbrew-pacman &> /dev/null
   then
-    echo "check_pacman: pacbrew-pacman not found, installing..."
+    echo -e "${COL_GREEN}check_pacman:${COL_NONE} pacbrew-pacman not found, installing..."
     wget $PACBREW_PACMAN_URL &> /dev/null
     sudo dpkg -i pacbrew-pacman-1.0.deb &> /dev/null
     rm -f pacbrew-pacman-1.0.deb &> /dev/null
   fi
-  echo "check_pacman: synching repositories..."
+  echo -e "${COL_GREEN}check_pacman:${COL_NONE} synching repositories..."
   sudo pacbrew-pacman -Sy &> /dev/null
-  echo "check_pacman: ok"
+  echo -e "${COL_GREEN}check_pacman:${COL_NONE} ok"
+}
+
+function install_local_package {
+  sudo pacbrew-pacman --noconfirm -U $1 &> /dev/null
 }
 
 function install_remote_package {
-  echo "install_remote_package: $1"
   sudo pacbrew-pacman --noconfirm --needed -S $1 &> /dev/null
 }
 
 function build_package {
-  echo "build_package: building "$1""
+  echo -e "${COL_GREEN}build_package:${COL_NONE} building "$1""
   # build package
   pushd "$1" &> /dev/null
   rm -rf *.pkg.tar.xz &> /dev/null
@@ -32,12 +36,26 @@ function build_package {
   popd &> /dev/null
 }
 
-function check_new {
+function build_packages {
 
-  echo "check_new..."
-
-  argv1=$1
   remote_packages=`pacbrew-pacman -Sl`
+
+  # parse args
+  while test $# -gt 0
+  do
+    case "$1" in
+      -a) echo -e "${COL_GREEN}build_packages:${COL_NONE} build all packages => enabled"
+          PACBREW_BUILD_ALL=true
+        ;;
+      -u) echo -e "${COL_GREEN}build_packages${COL_NONE}: upload built packages => enabled"
+          PACBREW_UPLOAD=true
+          # download repo files from server
+          rm -rf pacbrew-repo && mkdir -p pacbrew-repo
+          scp mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
+        ;;
+    esac
+    shift
+  done
 
   while read line; do
     # skip empty lines and comments
@@ -51,7 +69,7 @@ function check_new {
     local_pkgrel=`cat $line/PKGBUILD | grep pkgrel= | sed 's/pkgrel=//g'`
     local_pkgdeps=`cat $line/PKGBUILD | grep depends= | sed -n "s/^.*'\(.*\)'.*$/\1/ p" | tr '\n' ' ' | awk '{$1=$1};1'`
     local_pkgverrel="$local_pkgver-$local_pkgrel"
-    
+
     # get remote package name and version
     remote_pkgname=`echo "$remote_packages" | grep -w $local_pkgname | awk '{print $2}'`
     remote_pkgverrel=`echo "$remote_packages" | grep -w $local_pkgname | awk '{print $3}'`
@@ -60,17 +78,32 @@ function check_new {
     fi
 
     # only build packages that are not available (version differ)
-    if [ "$argv1" ==  "-f" ] || [ "$local_pkgverrel" != "$remote_pkgverrel" ]; then
-      echo "check_new: new package detected: $local_pkgname ($remote_pkgverrel => $local_pkgverrel)"
+    if [ $PACBREW_BUILD_ALL ] || [ "$local_pkgverrel" != "$remote_pkgverrel" ]; then
+      echo -e "${COL_GREEN}build_packages:${COL_NONE} new package detected: $local_pkgname ($remote_pkgverrel => $local_pkgverrel)"
       build_package "$line"
+      # install built package
+      install_local_package $line/*.pkg.tar.xz
+      if [ $PACBREW_UPLOAD ]; then
+        echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading package: $local_pkgname"
+        scp $line/*.pkg.tar.xz mydedibox.fr:/var/www/pacbrew/packages/
+        pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz
+      fi
     else
       # always install deps for later packges build
+      echo -e "${COL_GREEN}build_packages:${COL_NONE} package exist in database, installing: $local_pkgname"
       install_remote_package "$local_pkgname"
     fi
 
   done < pacbrew-packages.cfg
+
+  # upload updated repo files and cleanup
+  if [ $PACBREW_UPLOAD ]; then
+    echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading updated repo..."
+    scp pacbrew-repo/* mydedibox.fr:/var/www/pacbrew/packages/
+    rm -rf pacbrew-repo
+  fi
 }
 
 check_pacman
-check_new $1
+build_packages "$@"
 
