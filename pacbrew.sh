@@ -50,7 +50,7 @@ function build_packages {
           PACBREW_UPLOAD=true
         ;;
       -su) echo -e "${COL_GREEN}build_packages:${COL_NONE} build all packages => enabled"
-          PACBREW_SSH_USER=$1
+          PACBREW_SSH_USER="$1"
         ;;
     esac
     shift
