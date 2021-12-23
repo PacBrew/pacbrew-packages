@@ -50,8 +50,7 @@ function build_packages {
           PACBREW_UPLOAD=true
         ;;
       -su) echo -e "${COL_GREEN}build_packages:${COL_NONE} build all packages => enabled"
-          echo "PACBREW_SSH_USER: $1"
-          PACBREW_SSH_USER="$1"
+          shift && PACBREW_SSH_USER="$1"
         ;;
     esac
     shift
@@ -61,7 +60,7 @@ function build_packages {
   if [ $PACBREW_UPLOAD ]; then
     echo -e "${COL_GREEN}build_packages:${COL_NONE} downloading pacbrew repo..."
     rm -rf pacbrew-repo && mkdir -p pacbrew-repo
-    scp "$PACBREW_SSH_USER"@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
+    scp $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
   fi
 
   while read line; do
@@ -90,7 +89,7 @@ function build_packages {
       echo -e "${COL_GREEN}build_packages:${COL_NONE} building ${COL_GREEN}$local_pkgname${COL_NONE} ($local_pkgverrel)"
       build_package "$line"
       # install built package
-      echo -e "${COL_GREEN}build_packages:${COL_NONE} installing package ${COL_GREEN}$line/*.pkg.tar.xz${COL_NONE}"
+      echo -e "${COL_GREEN}build_packages:${COL_NONE} installing package ${COL_GREEN}$line/$local_pkgname-$local_pkgverrel.pkg.tar.xz${COL_NONE}"
       install_local_package $line/*.pkg.tar.xz
       if [ $PACBREW_UPLOAD ]; then
         echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading package ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
