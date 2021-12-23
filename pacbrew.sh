@@ -60,7 +60,7 @@ function build_packages {
   if [ $PACBREW_UPLOAD ]; then
     echo -e "${COL_GREEN}build_packages:${COL_NONE} downloading pacbrew repo..."
     rm -rf pacbrew-repo && mkdir -p pacbrew-repo
-    scp $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
+    scp "$PACBREW_SSH_USER"@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
   fi
 
   while read line; do
