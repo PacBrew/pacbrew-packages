@@ -26,29 +26,19 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-
-      # Install pacbrew-pacman dependencies
-      - name: Install pacbrew-pacman dependencies
-        run: sudo apt-get install -y git build-essential automake autoconf libtool meson ninja-build libarchive-dev gettext libcurl4-openssl-dev libgpgme-dev libssl-dev
       
-      # Build pacbrew-pacman
-      - name: Build pacbrew-pacman
+      # Install pacbrew-pacman
+      - name: Install pacbrew-pacman
         run: |
-          git clone https://github.com/PacBrew/pacbrew-pacman.git
-          cd pacbrew-pacman
-          meson --prefix=/opt/pacbrew/pacman --sysconfdir=/opt/pacbrew/pacman/etc \
-            --localstatedir=/opt/pacbrew/pacman/var -Dpkg-ext=.pkg.tar.xz \
-            -Dmakepkg-template-dir=/opt/pacbrew/usr/share/makepkg-template build
-          ninja -C build
-          ninja -C build install
-          sudo cp pacbrew/bin/* /usr/bin/
+          wget https://github.com/PacBrew/pacbrew-pacman/releases/download/pacbrew-release-1.0/pacbrew-pacman-1.0.deb
+          sudo dpkg -i pacbrew-pacman-1.0.deb
           
-      # Install pacbrew-packages dependencies
-      - name: Install pacbrew-packages dependencies
-        run: sudo apt-get install -y libarchive-tools
+      # Install pacbrew-packages build dependencies
+      - name: Install pacbrew-packages build dependencies
+        run: sudo apt-get install -y git build-essential automake autoconf libtool libarchive-tools
 
       # Build pacbrew-packages
       - name: Build pacbrew-packages
         run: |
           cd $GITHUB_WORKSPACE
-          ./pacbrew.sh build
+          ./pacbrew.sh
