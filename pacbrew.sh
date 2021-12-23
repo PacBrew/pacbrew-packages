@@ -20,11 +20,11 @@ function check_pacman {
 }
 
 function install_local_package {
-  sudo pacbrew-pacman --noconfirm -U $1 &> /dev/null
+  sudo pacbrew-pacman --noconfirm -U $1
 }
 
 function install_remote_package {
-  sudo pacbrew-pacman --noconfirm --needed -S $1 &> /dev/null
+  sudo pacbrew-pacman --noconfirm --needed -S $1
 }
 
 function build_package {
@@ -89,16 +89,16 @@ function build_packages {
       echo -e "${COL_GREEN}build_packages:${COL_NONE} building ${COL_GREEN}$local_pkgname${COL_NONE} ($local_pkgverrel)"
       build_package "$line"
       # install built package
-      echo -e "${COL_GREEN}build_packages:${COL_NONE} installing package ${COL_GREEN}$line/$local_pkgname-$local_pkgverrel.pkg.tar.xz${COL_NONE}"
+      echo -e "${COL_GREEN}build_packages:${COL_NONE} installing ${COL_GREEN}$line/$local_pkgname-$local_pkgverrel.pkg.tar.xz${COL_NONE}"
       install_local_package $line/*.pkg.tar.xz
       if [ $PACBREW_UPLOAD ]; then
-        echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading package ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
+        echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
         scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/
         pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz
       fi
     else
       # always install deps for later packges build
-      echo -e "${COL_GREEN}build_packages:${COL_NONE} found in database, installing package ${COL_GREEN}$local_pkgname${COL_NONE}"
+      echo -e "${COL_GREEN}build_packages: $local_pkgname${COL_NONE} found in database, installing..."
       install_remote_package "$local_pkgname"
     fi
 
