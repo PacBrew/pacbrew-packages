@@ -20,19 +20,19 @@ function check_pacman {
 }
 
 function install_local_package {
-  sudo pacbrew-pacman --noconfirm -U $1
+  sudo pacbrew-pacman --noconfirm -U $1 &> /dev/null || exit 1
 }
 
 function install_remote_package {
-  sudo pacbrew-pacman --noconfirm --needed -S $1
+  sudo pacbrew-pacman --noconfirm --needed -S $1 &> /dev/null || exit 1
 }
 
 function build_package {
   # build package
-  pushd "$1" &> /dev/null
-  rm -rf *.pkg.tar.xz &> /dev/null
-  pacbrew-makepkg -C -f
-  popd &> /dev/null
+  pushd "$1" &> /dev/null || exit 1
+  rm -rf *.pkg.tar.xz &> /dev/null || exit 1
+  pacbrew-makepkg -C -f || exit 1
+  popd &> /dev/null || exit 1
 }
 
 function build_packages {
@@ -60,7 +60,7 @@ function build_packages {
   if [ $PACBREW_UPLOAD ]; then
     echo -e "${COL_GREEN}build_packages:${COL_NONE} downloading pacbrew repo..."
     rm -rf pacbrew-repo && mkdir -p pacbrew-repo
-    scp $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo
+    scp $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo || exit 1
   fi
 
   while read line; do
@@ -93,8 +93,8 @@ function build_packages {
       install_local_package $line/*.pkg.tar.xz
       if [ $PACBREW_UPLOAD ]; then
         echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
-        scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/
-        pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz
+        scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/ || exit 1
+        pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz || exit 1
       fi
     else
       # always install deps for later packges build
@@ -107,7 +107,7 @@ function build_packages {
   # upload updated repo files and cleanup
   if [ $PACBREW_UPLOAD ]; then
     echo -e "${COL_GREEN}build_packages:${COL_NONE} updating pacbrew repo with new packages..."
-    scp pacbrew-repo/* $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/
+    scp pacbrew-repo/* $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/ || exit 1
     rm -rf pacbrew-repo
   fi
   
