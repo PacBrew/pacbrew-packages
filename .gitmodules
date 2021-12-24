@@ -7,3 +7,6 @@
 [submodule "ps4-openorbis"]
 	path = ps4-openorbis
 	url = https://github.com/PacBrew/ps4-openorbis.git
+[submodule "ps4-openorbis-portlibs"]
+	path = ps4-openorbis-portlibs
+	url = https://github.com/PacBrew/ps4-openorbis-portlibs.git
