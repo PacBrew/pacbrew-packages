@@ -45,7 +45,7 @@ jobs:
 
       # Install pacbrew-packages build dependencies
       - name: Install pacbrew-packages build dependencies
-        run: sudo apt-get install -y git build-essential automake autoconf libtool libarchive-tools
+        run: sudo apt-get install -y git build-essential automake autoconf libtool libarchive-tools nasm
 
       # Build pacbrew-packages
       - name: Build pacbrew-packages
