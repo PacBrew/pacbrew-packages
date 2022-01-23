@@ -43,13 +43,13 @@ function build_packages {
   while test $# -gt 0
   do
     case "$1" in
-      -a) echo -e "${COL_GREEN}build_packages:${COL_NONE} build all packages => enabled"
+      -a) echo -e "${COL_GREEN}build_packages${COL_NONE}: build all packages => enabled"
           PACBREW_BUILD_ALL=true
         ;;
       -u) echo -e "${COL_GREEN}build_packages${COL_NONE}: upload built packages => enabled"
           PACBREW_UPLOAD=true
         ;;
-      -su) echo -e "${COL_GREEN}build_packages:${COL_NONE} build all packages => enabled"
+      -su) echo -e "${COL_GREEN}build_packages${COL_NONE}: ssh user for upload"
           shift && PACBREW_SSH_USER="$1"
         ;;
     esac
