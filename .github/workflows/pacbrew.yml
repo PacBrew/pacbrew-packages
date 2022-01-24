@@ -51,4 +51,4 @@ jobs:
       - name: Build pacbrew-packages
         run: |
           cd $GITHUB_WORKSPACE
-          ./pacbrew.sh -u -su ${{ secrets.SSH_USER }}
+          ./pacbrew.sh -u -s ${{ secrets.SSH_USER }}
