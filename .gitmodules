@@ -1,9 +1,3 @@
-[submodule "ps4-orbisdev"]
-	path = ps4-orbisdev
-	url = git@github.com:PacBrew/ps4-orbisdev.git
-[submodule "ps4-orbisdev-portlibs"]
-	path = ps4-orbisdev-portlibs
-	url = git@github.com:PacBrew/ps4-orbisdev-portlibs.git
 [submodule "ps4-openorbis"]
 	path = ps4-openorbis
 	url = https://github.com/PacBrew/ps4-openorbis.git
