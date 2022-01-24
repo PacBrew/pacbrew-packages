@@ -43,19 +43,19 @@ function build_packages {
   while test $# -gt 0
   do
     case "$1" in
-      -a) echo -e "${COL_GREEN}build_packages${COL_NONE}: build all packages => enabled"
+      -f) echo -e "${COL_GREEN}build_packages${COL_NONE}: force rebuild all packages"
           PACBREW_BUILD_ALL=true
         ;;
-      -u) echo -e "${COL_GREEN}build_packages${COL_NONE}: upload built packages => enabled"
+      -u) echo -e "${COL_GREEN}build_packages${COL_NONE}: upload packages to pacbrew repo"
           PACBREW_UPLOAD=true
         ;;
-      -su) echo -e "${COL_GREEN}build_packages${COL_NONE}: ssh user for upload"
+      -s) echo -e "${COL_GREEN}build_packages${COL_NONE}: ssh user for upload"
           shift && PACBREW_SSH_USER="$1"
         ;;
     esac
     shift
   done
-  
+
   # download repo files from server, if needed
   if [ $PACBREW_UPLOAD ]; then
     echo -e "${COL_GREEN}build_packages:${COL_NONE} downloading pacbrew repo..."
@@ -110,7 +110,7 @@ function build_packages {
     scp pacbrew-repo/* $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/ || exit 1
     rm -rf pacbrew-repo
   fi
-  
+
   echo -e "${COL_GREEN}build_packages:${COL_NONE} all done !"
 }
 
