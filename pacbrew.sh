@@ -46,10 +46,8 @@ function build_packages {
       -f) echo -e "${COL_GREEN}build_packages${COL_NONE}: force rebuild all packages"
           PACBREW_BUILD_ALL=true
         ;;
-      -u) echo -e "${COL_GREEN}build_packages${COL_NONE}: upload packages to pacbrew repo"
+      -u) echo -e "${COL_GREEN}build_packages${COL_NONE}: upload packages to pacbrew repo with specified user"
           PACBREW_UPLOAD=true
-        ;;
-      -s) echo -e "${COL_GREEN}build_packages${COL_NONE}: ssh user for upload"
           shift && PACBREW_SSH_USER="$1"
         ;;
     esac
