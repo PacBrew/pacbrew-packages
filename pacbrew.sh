@@ -15,7 +15,7 @@ function check_pacman {
     rm -f pacbrew-pacman-1.0.deb &> /dev/null
   fi
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} synching repositories..."
-  #sudo pacbrew-pacman -Sy &> /dev/null
+  sudo pacbrew-pacman -Sy &> /dev/null
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} ok"
 }
 
