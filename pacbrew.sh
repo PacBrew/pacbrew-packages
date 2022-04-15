@@ -15,7 +15,7 @@ function check_pacman {
     rm -f pacbrew-pacman-1.0.deb &> /dev/null
   fi
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} synching repositories..."
-  sudo pacbrew-pacman -Sy &> /dev/null
+  sudo pacbrew-pacman -Syy &> /dev/null
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} ok"
 }
 
@@ -58,7 +58,7 @@ function build_packages {
   if [ $PACBREW_UPLOAD ]; then
     echo -e "${COL_GREEN}build_packages:${COL_NONE} downloading pacbrew repo..."
     rm -rf pacbrew-repo && mkdir -p pacbrew-repo
-    #scp $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo || exit 1
+    scp $PACBREW_SSH_USER@mydedibox.fr:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo || exit 1
   fi
 
   while read line; do
