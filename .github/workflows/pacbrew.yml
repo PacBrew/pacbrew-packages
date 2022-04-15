@@ -35,6 +35,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           name: key_id_main
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          config: |
+            Host main
+            HostName ${{ secrets.SSH_HOST }}
+            User ${{ secrets.SSH_USER }}
+            IdentityFile ~/.ssh/key_id_main
       #- name: Adding main key to known hosts
       #  run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
@@ -46,6 +51,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY_US }}
           name: key_id_mirror
           known_hosts: ${{ secrets.KNOWN_HOSTS_US }}
+          config: |
+            Host mirror
+            HostName ${{ secrets.SSH_HOST_US }}
+            User ${{ secrets.SSH_USER }}
+            IdentityFile ~/.ssh/key_id_mirror
       #- name: Adding mirror key to known hosts
       #  run: ssh-keyscan -H ${{ secrets.SSH_HOST_US }} >> ~/.ssh/known_hosts
 
