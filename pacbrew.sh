@@ -15,24 +15,8 @@ function check_pacman {
     rm -f pacbrew-pacman-1.0.deb &> /dev/null
   fi
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} synching repositories..."
-  sudo pacbrew-pacman -Syy &> /dev/null
+  sudo -E pacbrew-pacman -Syy &> /dev/null
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} ok"
-}
-
-function install_local_package {
-  sudo pacbrew-pacman --noconfirm -U $1 &> /dev/null || exit 1
-}
-
-function install_remote_package {
-  sudo pacbrew-pacman --noconfirm --needed -S $1 &> /dev/null || exit 1
-}
-
-function build_package {
-  # build package
-  pushd "$1" &> /dev/null || exit 1
-  rm -rf *.pkg.tar.xz &> /dev/null || exit 1
-  pacbrew-makepkg -C -f || exit 1
-  popd &> /dev/null || exit 1
 }
 
 # get_pkg_info PKGBUILD ARCH
@@ -66,6 +50,39 @@ function get_pkg_rel() {
 # get_pkg_deps PKGINFO
 function get_pkg_deps() {
   echo `get_pkg_var "$1" "depends"`
+}
+
+# get_pkg_groups PKGINFO
+function get_pkg_groups() {
+  echo `get_pkg_var "$1" "groups"`
+}
+
+# is_android_portlibs_pkg LINE
+function is_android_portlibs_pkg() {
+  if [[ "$1" == *"android-portlibs"* ]]; then
+    # 0 = true
+    return 0
+  else
+    # 1 = false
+    return 1
+  fi
+}
+
+function install_local_package {
+  sudo pacbrew-pacman --noconfirm -U $1 &> /dev/null || exit 1
+}
+
+function install_remote_package {
+  sudo pacbrew-pacman --noconfirm --needed -S $1 &> /dev/null || exit 1
+}
+
+# build_package PKGPATH ARCH
+function build_package {
+  # build package
+  pushd "$1" &> /dev/null || exit 1
+  rm -rf *.pkg.tar.xz &> /dev/null || exit 1
+  CARCH=$2 pacbrew-makepkg -C -f || exit 1
+  popd &> /dev/null || exit 1
 }
 
 function build_packages {
@@ -105,46 +122,53 @@ function build_packages {
     fi
 
     # set target arch
-    CARCH=""
+    ARCHS="any"
 
-    # get local package info string
-    PKGINFO=$(get_pkg_info "$line/PKGBUILD" $CARCH)
-
-    # get local package name and version from info string
-    local_pkgname=$(get_pkg_name "$PKGINFO")
-    local_pkgver=$(get_pkg_ver "$PKGINFO")
-    local_pkgrel=$(get_pkg_rel "$PKGINFO")
-    local_pkgdeps=$(get_pkg_deps "$PKGINFO")
-    local_pkgverrel="$local_pkgver-$local_pkgrel"
-    #echo "name: $local_pkgname, version: $local_pkgverrel, depends: $local_pkgdeps"
-    #continue
-
-    # get remote package name and version
-    remote_pkgname=`echo "$remote_packages" | grep -w $local_pkgname | awk '{print $2}'`
-    remote_pkgverrel=`echo "$remote_packages" | grep -w $local_pkgname | awk '{print $3}'`
-    if [ -z "$remote_pkgverrel" ]; then
-      remote_pkgverrel="n/a"
+    # android portlibs can be aarch64 or armv7a
+    if is_android_portlibs_pkg $line; then
+      ARCHS="aarch64 armv7a"
     fi
 
-    # only build packages that are not available (version differ)
-    if [ $PACBREW_BUILD_ALL ] || [ "$local_pkgverrel" != "$remote_pkgverrel" ]; then
-      echo -e "${COL_GREEN}build_packages:${COL_NONE} new package: ${COL_GREEN}$local_pkgname${COL_NONE} ($remote_pkgverrel => $local_pkgverrel)"
-      echo -e "${COL_GREEN}build_packages:${COL_NONE} building ${COL_GREEN}$local_pkgname${COL_NONE} ($local_pkgverrel)"
-      build_package "$line"
-      # install built package
-      echo -e "${COL_GREEN}build_packages:${COL_NONE} installing ${COL_GREEN}$line/$local_pkgname-$local_pkgverrel.pkg.tar.xz${COL_NONE}"
-      install_local_package $line/*.pkg.tar.xz
-      if [ $PACBREW_UPLOAD ]; then
-        echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
-        scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@$PACBREW_SSH_HOST:/var/www/pacbrew/packages/ || exit 1
-        pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz || exit 1
+    for ARCH in $ARCHS; do
+      # get local package info string
+      PKGINFO=$(get_pkg_info "$line/PKGBUILD" $ARCH)
+
+      # get local package name and version from info string
+      local_pkgname=$(get_pkg_name "$PKGINFO")
+      local_pkgver=$(get_pkg_ver "$PKGINFO")
+      local_pkgrel=$(get_pkg_rel "$PKGINFO")
+      local_pkgdeps=$(get_pkg_deps "$PKGINFO")
+      local_pkggrps=$(get_pkg_groups "$PKGINFO")
+      local_pkgverrel="$local_pkgver-$local_pkgrel"
+      #echo "name: $local_pkgname, version: $local_pkgverrel, groups: $local_pkggrps, depends: $local_pkgdeps"
+      #continue
+
+      # get remote package name and version
+      remote_pkgname=`echo "$remote_packages" | grep "$local_pkgname " | awk '{print $2}'`
+      remote_pkgverrel=`echo "$remote_packages" | grep "$local_pkgname " | awk '{print $3}'`
+      if [ -z "$remote_pkgverrel" ]; then
+        remote_pkgverrel="n/a"
       fi
-    else
-      # always install deps for later packges build
-      echo -e "${COL_GREEN}build_packages: $local_pkgname${COL_NONE} found in database, installing..."
-      install_remote_package "$local_pkgname"
-    fi
 
+      # only build packages that are not available (version differ)
+      if [ $PACBREW_BUILD_ALL ] || [ "$local_pkgverrel" != "$remote_pkgverrel" ]; then
+        echo -e "${COL_GREEN}build_packages:${COL_NONE} new package: ${COL_GREEN}$local_pkgname${COL_NONE} ($remote_pkgverrel => $local_pkgverrel)"
+        echo -e "${COL_GREEN}build_packages:${COL_NONE} building ${COL_GREEN}$local_pkgname${COL_NONE} ($local_pkgverrel)"
+        build_package "$line" $ARCH
+        # install built package
+        echo -e "${COL_GREEN}build_packages:${COL_NONE} installing ${COL_GREEN}$line/$local_pkgname-$local_pkgverrel.pkg.tar.xz${COL_NONE}"
+        install_local_package $line/*.pkg.tar.xz
+        if [ $PACBREW_UPLOAD ]; then
+          echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
+          scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@$PACBREW_SSH_HOST:/var/www/pacbrew/packages/ || exit 1
+          pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz || exit 1
+        fi
+      else
+        # always install deps for later packges build
+        echo -e "${COL_GREEN}build_packages: $local_pkgname${COL_NONE} is up to date, installing if needed..."
+        install_remote_package "$local_pkgname"
+      fi
+    done
   done < pacbrew-packages.cfg
 
   # upload updated repo files and cleanup

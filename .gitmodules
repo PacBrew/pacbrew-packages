@@ -4,3 +4,9 @@
 [submodule "ps4-openorbis-portlibs"]
 	path = ps4-portlibs
 	url = https://github.com/PacBrew/ps4-openorbis-portlibs.git
+[submodule "android-toolchain"]
+	path = android-toolchain
+	url = https://github.com/PacBrew/android-toolchain.git
+[submodule "android-portlibs"]
+	path = android-portlibs
+	url = https://github.com/PacBrew/android-portlibs.git
