@@ -35,8 +35,40 @@ function build_package {
   popd &> /dev/null || exit 1
 }
 
-function build_packages {
+# get_pkg_info PKGBUILD ARCH
+function get_pkg_info() {
+  pushd $(dirname "$1") &> /dev/null || exit 1
+  local pkginfo=`CARCH=$2 pacbrew-makepkg --printsrcinfo` &> /dev/null || exit 1
+  popd &> /dev/null || exit 1
+  echo "$pkginfo"
+}
 
+# get_pkg_var PKGINFO VAR
+function get_pkg_var() {
+  echo `echo "$1" | grep "$2" | cut -d= -f2 | xargs`
+}
+
+# get_pkg_name PKGINFO
+function get_pkg_name() {
+  echo `get_pkg_var "$1" "pkgname"`
+}
+
+# get_pkg_ver PKGINFO
+function get_pkg_ver() {
+  echo `get_pkg_var "$1" "pkgver"`
+}
+
+# get_pkg_rel PKGINFO
+function get_pkg_rel() {
+  echo `get_pkg_var "$1" "pkgrel"`
+}
+
+# get_pkg_deps PKGINFO
+function get_pkg_deps() {
+  echo `get_pkg_var "$1" "depends"`
+}
+
+function build_packages {
   PACBREW_SSH_HOST="mydedibox.fr"
   remote_packages=`pacbrew-pacman -Sl`
 
@@ -72,12 +104,20 @@ function build_packages {
       continue
     fi
 
-    # get local package name and version
-    local_pkgname=`cat $line/PKGBUILD | grep pkgname= | sed 's/pkgname=//g'`
-    local_pkgver=`cat $line/PKGBUILD | grep pkgver= | sed 's/pkgver=//g'`
-    local_pkgrel=`cat $line/PKGBUILD | grep pkgrel= | sed 's/pkgrel=//g'`
-    local_pkgdeps=`cat $line/PKGBUILD | grep depends= | sed -n "s/^.*'\(.*\)'.*$/\1/ p" | tr '\n' ' ' | awk '{$1=$1};1'`
+    # set target arch
+    CARCH=""
+
+    # get local package info string
+    PKGINFO=$(get_pkg_info "$line/PKGBUILD" $CARCH)
+
+    # get local package name and version from info string
+    local_pkgname=$(get_pkg_name "$PKGINFO")
+    local_pkgver=$(get_pkg_ver "$PKGINFO")
+    local_pkgrel=$(get_pkg_rel "$PKGINFO")
+    local_pkgdeps=$(get_pkg_deps "$PKGINFO")
     local_pkgverrel="$local_pkgver-$local_pkgrel"
+    #echo "name: $local_pkgname, version: $local_pkgverrel, depends: $local_pkgdeps"
+    #continue
 
     # get remote package name and version
     remote_pkgname=`echo "$remote_packages" | grep -w $local_pkgname | awk '{print $2}'`
