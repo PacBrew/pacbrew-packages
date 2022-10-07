@@ -126,7 +126,7 @@ function build_packages {
 
     # android portlibs can be aarch64 or armv7a
     if is_android_portlibs_pkg $line; then
-      ARCHS="aarch64 armv7a"
+      ARCHS="aarch64 armv7a x86_64"
     fi
 
     for ARCH in $ARCHS; do
