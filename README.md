@@ -1,11 +1,11 @@
 [![pacbrew.sh](https://github.com/PacBrew/pacbrew-packages/actions/workflows/pacbrew.yml/badge.svg)](https://github.com/PacBrew/pacbrew-packages/actions/workflows/pacbrew.yml)
 
-#### Install ps4 openorbis toolchain and portlibs (ubuntu):
+#### Install ps4 openorbis toolchain and portlibs (ubuntu 22.04):
 
   - download and install pacbrew-pacman:
   ```
-  wget https://github.com/PacBrew/pacbrew-pacman/releases/download/pacbrew-release-1.0/pacbrew-pacman-1.0.deb
-  sudo dpkg -i pacbrew-pacman-1.0.deb
+  wget https://github.com/PacBrew/pacbrew-pacman/releases/download/pacbrew-release-1.1/pacbrew-pacman-1.1.deb
+  sudo dpkg -i pacbrew-pacman-1.1.deb
   ```
   - update pacbrew online database:
   ```

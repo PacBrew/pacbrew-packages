@@ -40,8 +40,8 @@ jobs:
       # Install pacbrew-pacman
       - name: Install pacbrew-pacman
         run: |
-          wget https://github.com/PacBrew/pacbrew-pacman/releases/download/pacbrew-release-1.0/pacbrew-pacman-1.0.deb
-          sudo dpkg -i pacbrew-pacman-1.0.deb
+          wget https://github.com/PacBrew/pacbrew-pacman/releases/download/pacbrew-release-1.1/pacbrew-pacman-1.1.deb
+          sudo dpkg -i pacbrew-pacman-1.1.deb
 
       # Install pacbrew-packages build dependencies
       - name: Install pacbrew-packages build dependencies
