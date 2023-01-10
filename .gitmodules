@@ -10,3 +10,9 @@
 [submodule "android-portlibs"]
 	path = android-portlibs
 	url = https://github.com/PacBrew/android-portlibs.git
+[submodule "dc-portlibs"]
+	path = dc-portlibs
+	url = https://github.com/PacBrew/dc-portlibs.git
+[submodule "dc-toolchain"]
+	path = dc-toolchain
+	url = https://github.com/PacBrew/dc-toolchain.git

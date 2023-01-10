@@ -2,7 +2,7 @@
 
 set -e
 
-PACBREW_PACMAN_URL="https://github.com/PacBrew/pacbrew-pacman/releases/download/pacbrew-release-1.0/pacbrew-pacman-1.0.deb"
+PACBREW_PACMAN_URL="https://github.com/PacBrew/pacbrew-pacman/releases/download/v1.1/pacbrew-pacman-1.1.deb"
 COL_GREEN='\033[0;32m'
 COL_NONE='\033[0m'
 
@@ -11,8 +11,8 @@ function check_pacman {
   then
     echo -e "${COL_GREEN}check_pacman:${COL_NONE} pacbrew-pacman not found, installing..."
     wget $PACBREW_PACMAN_URL &> /dev/null
-    sudo dpkg -i pacbrew-pacman-1.0.deb &> /dev/null
-    rm -f pacbrew-pacman-1.0.deb &> /dev/null
+    sudo dpkg -i pacbrew-pacman-1.1.deb &> /dev/null
+    rm -f pacbrew-pacman-1.1.deb &> /dev/null
   fi
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} synching repositories..."
   sudo -E pacbrew-pacman -Syy &> /dev/null
@@ -29,7 +29,7 @@ function get_pkg_info() {
 
 # get_pkg_var PKGINFO VAR
 function get_pkg_var() {
-  echo `echo "$1" | grep "$2" | cut -d= -f2 | xargs`
+  echo `echo "$1" | grep "$2 =" | cut -d= -f2 | xargs`
 }
 
 # get_pkg_name PKGINFO
@@ -45,6 +45,11 @@ function get_pkg_ver() {
 # get_pkg_rel PKGINFO
 function get_pkg_rel() {
   echo `get_pkg_var "$1" "pkgrel"`
+}
+
+# get_pkg_arch PKGINFO
+function get_pkg_arch() {
+  echo `get_pkg_var "$1" "arch"`
 }
 
 # get_pkg_deps PKGINFO
