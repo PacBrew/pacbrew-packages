@@ -2,27 +2,24 @@
 
 set -e
 
-PACBREW_PACMAN_URL="https://github.com/PacBrew/pacbrew-pacman/releases/download/v1.1/pacbrew-pacman-1.1.deb"
 COL_GREEN='\033[0;32m'
 COL_NONE='\033[0m'
 
 function check_pacman {
-  if ! command -v pacbrew-pacman &> /dev/null
+  if ! command -v pacman &> /dev/null
   then
-    echo -e "${COL_GREEN}check_pacman:${COL_NONE} pacbrew-pacman not found, installing..."
-    wget $PACBREW_PACMAN_URL &> /dev/null
-    sudo dpkg -i pacbrew-pacman-1.1.deb &> /dev/null
-    rm -f pacbrew-pacman-1.1.deb &> /dev/null
+    echo -e "${COL_GREEN}check_pacman:${COL_NONE} pacman not found, exiting..."
+    exit 1
   fi
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} synching repositories..."
-  sudo -E pacbrew-pacman -Syy &> /dev/null
+  sudo -E pacman -Syy #&> /dev/null
   echo -e "${COL_GREEN}check_pacman:${COL_NONE} ok"
 }
 
 # get_pkg_info PKGBUILD ARCH
 function get_pkg_info() {
   pushd $(dirname "$1") &> /dev/null || exit 1
-  local pkginfo=`CARCH=$2 pacbrew-makepkg --printsrcinfo` &> /dev/null || exit 1
+  local pkginfo=`CARCH=$2 makepkg --printsrcinfo` &> /dev/null || exit 1
   popd &> /dev/null || exit 1
   echo "$pkginfo"
 }
@@ -74,11 +71,11 @@ function is_android_portlibs_pkg() {
 }
 
 function install_local_package {
-  sudo pacbrew-pacman --noconfirm -U $1 &> /dev/null || exit 1
+  sudo pacman --noconfirm -U $1 &> /dev/null || exit 1
 }
 
 function install_remote_package {
-  sudo pacbrew-pacman --noconfirm --needed -S $1 &> /dev/null || exit 1
+  sudo pacman --noconfirm --needed -S $1 &> /dev/null || exit 1
 }
 
 # build_package PKGPATH ARCH
@@ -86,13 +83,13 @@ function build_package {
   # build package
   pushd "$1" &> /dev/null || exit 1
   rm -rf *.pkg.tar.xz &> /dev/null || exit 1
-  CARCH=$2 pacbrew-makepkg -C -f || exit 1
+  CARCH=$2 makepkg -C -f || exit 1
   popd &> /dev/null || exit 1
 }
 
 function build_packages {
   PACBREW_SSH_HOST="mydedibox.fr"
-  remote_packages=`pacbrew-pacman -Sl`
+  remote_packages=`pacman -Sl | grep pacbrew`
 
   # parse args
   while test $# -gt 0
@@ -166,7 +163,7 @@ function build_packages {
         if [ $PACBREW_UPLOAD ]; then
           echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
           scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@$PACBREW_SSH_HOST:/var/www/pacbrew/packages/ || exit 1
-          pacbrew-repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz || exit 1
+          repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz || exit 1
         fi
       else
         # always install deps for later packges build

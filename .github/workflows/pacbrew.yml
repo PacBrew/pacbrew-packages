@@ -18,7 +18,11 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    container: cpasjuste/pacbrew:latest
+    defaults:
+      run:
+        shell: bash
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -37,15 +41,10 @@ jobs:
       - name: Adding main key to known hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      # Install pacbrew-pacman
-      - name: Install pacbrew-pacman
+      # Update pacbrew repo
+      - name: Update pacbrew repo and packages
         run: |
-          wget https://github.com/PacBrew/pacbrew-pacman/releases/download/v1.1/pacbrew-pacman-1.1.deb
-          sudo dpkg -i pacbrew-pacman-1.1.deb
-
-      # Install pacbrew-packages build dependencies
-      - name: Install pacbrew-packages build dependencies
-        run: sudo apt update && sudo apt install -y git build-essential automake autoconf libtool libarchive-tools nasm
+          sudo pacman -Syu --noconfirm
 
       # Build pacbrew-packages
       - name: Build pacbrew-packages
