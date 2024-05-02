@@ -71,11 +71,13 @@ function is_android_portlibs_pkg() {
 }
 
 function install_local_package {
-  sudo pacman --noconfirm -U $1 &> /dev/null || exit 1
+  sudo pacman --noconfirm -U $1 || exit 1
+  #&> /dev/null
 }
 
 function install_remote_package {
-  sudo pacman --noconfirm --needed -S $1 &> /dev/null || exit 1
+  sudo pacman --noconfirm --needed -S $1 || exit 1
+  #&> /dev/null
 }
 
 # build_package PKGPATH ARCH
