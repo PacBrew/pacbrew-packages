@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-22.04
     container:
       image: cpasjuste/pacbrew:latest
-      options: --user pacbrew
     defaults:
       run:
         shell: bash
@@ -45,11 +44,12 @@ jobs:
 
       # Update pacbrew repo
       - name: Update pacbrew repo and packages
-        run: sudo pacman -Syu --noconfirm
+        run: pacman -Syu --noconfirm
 
-      # Build pacbrew-packages
+      # Build pacbrew-packages as "pacbrew" user (needed for makepkg)
       - name: Build pacbrew-packages
         run: |
-          cd $GITHUB_WORKSPACE
-          ./pacbrew.sh
+          chown -R pacbrew:pacbrew "$GITHUB_WORKSPACE"
+          cd "$GITHUB_WORKSPACE"
+          su pacbrew -s /bin/bash -c ./pacbrew.sh
       #-u ${{ secrets.SSH_USER }} -h ${{ secrets.SSH_HOST }}
