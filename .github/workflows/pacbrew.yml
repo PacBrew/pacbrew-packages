@@ -52,4 +52,5 @@ jobs:
         run: |
           apt install -y sudo
           cd $GITHUB_WORKSPACE
-          ./pacbrew.sh -u ${{ secrets.SSH_USER }} -h ${{ secrets.SSH_HOST }}
+          ./pacbrew.sh
+      #-u ${{ secrets.SSH_USER }} -h ${{ secrets.SSH_HOST }}
