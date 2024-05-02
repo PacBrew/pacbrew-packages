@@ -37,11 +37,10 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: '# dummy'
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Setting ssh for pacbrew user
         run: |
           cp -r /root/.ssh /home/pacbrew/.ssh
-          echo "${{ secrets.KNOWN_HOSTS }}" > /home/pacbrew/.ssh/known_hosts
           chown pacbrew:pacbrew /home/pacbrew/.ssh
       # Update pacbrew repo
       - name: Update pacbrew repo and packages
