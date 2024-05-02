@@ -19,7 +19,9 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-22.04
-    container: cpasjuste/pacbrew:latest
+    container:
+      image: cpasjuste/pacbrew:latest
+      options: --user pacbrew
     defaults:
       run:
         shell: bash
@@ -39,18 +41,15 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: '# dummy'
       - name: Adding main key to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       # Update pacbrew repo
       - name: Update pacbrew repo and packages
-        run: pacman -Syu --noconfirm
+        run: sudo pacman -Syu --noconfirm
 
       # Build pacbrew-packages
       - name: Build pacbrew-packages
         run: |
-          apt install -y sudo
           cd $GITHUB_WORKSPACE
           ./pacbrew.sh
       #-u ${{ secrets.SSH_USER }} -h ${{ secrets.SSH_HOST }}
