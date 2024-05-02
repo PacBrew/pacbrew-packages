@@ -42,7 +42,7 @@ jobs:
         run: |
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> /root/.ssh/known_hosts
           cp -r /root/.ssh/. /home/pacbrew/.ssh/
-          chown pacbrew:pacbrew /home/pacbrew/.ssh
+          chown -R pacbrew:pacbrew /home/pacbrew/.ssh
       # Update pacbrew repo
       - name: Update pacbrew repo and packages
         run: pacman -Sy && pacman -S --noconfirm --needed ps4-openorbis ps4-openorbis-portlibs
