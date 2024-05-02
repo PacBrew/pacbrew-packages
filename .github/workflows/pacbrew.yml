@@ -39,7 +39,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Setting pacbrew ssh config
         run: |
-          cp -r ~/.ssh /home/pacbrew/.ssh/
+          cp -r /root/.ssh /home/pacbrew/.ssh
           echo "${{ secrets.KNOWN_HOSTS }}" > /home/pacbrew/.ssh/known_hosts
           chown pacbrew:pacbrew /home/pacbrew/.ssh
 
