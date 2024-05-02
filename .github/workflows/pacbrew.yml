@@ -50,6 +50,5 @@ jobs:
       - name: Build pacbrew-packages
         run: |
           chown -R pacbrew:pacbrew "$GITHUB_WORKSPACE"
-          cd "$GITHUB_WORKSPACE"
-          su pacbrew -s /bin/bash -c ./pacbrew.sh
-      #-u ${{ secrets.SSH_USER }} -h ${{ secrets.SSH_HOST }}
+          cd "$GITHUB_WORKSPACE" && su -c "./pacbrew.sh" -g pacbrew pacbrew
+        #-u ${{ secrets.SSH_USER }} -h ${{ secrets.SSH_HOST }}
