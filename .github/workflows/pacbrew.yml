@@ -44,7 +44,7 @@ jobs:
           chown pacbrew:pacbrew /home/pacbrew/.ssh/known_hosts
       # Update pacbrew repo
       - name: Update pacbrew repo and packages
-        run: pacman -Syu --noconfirm
+        run: pacman -Sy && pacman -S --noconfirm --needed ps4-openorbis ps4-openorbis-portlibs
 
       # Build pacbrew-packages as "pacbrew" user (needed for makepkg)
       - name: Build pacbrew-packages
