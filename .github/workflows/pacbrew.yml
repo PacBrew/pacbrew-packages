@@ -50,7 +50,6 @@ jobs:
       # Build pacbrew-packages as "pacbrew" user (needed for makepkg)
       - name: Build pacbrew-packages
         run: |
-          pacman -S --noconfirm dotnet-sdk
           chown -R pacbrew:pacbrew "$GITHUB_WORKSPACE"
           cd "$GITHUB_WORKSPACE" && su -c "./pacbrew.sh -u ${{ secrets.SSH_USER }} -h ${{ secrets.SSH_HOST }}" -g pacbrew pacbrew
 
