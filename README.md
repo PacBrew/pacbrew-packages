@@ -7,7 +7,7 @@ PacBrew is a pacman based package manager for building and/or managing toolchain
   <summary>ubuntu 24.04</summary>
   
   ```
-  sudo apt install pacman-package-manager makepkg
+  sudo apt install pacman-package-manager makepkg build-essential autoconf libtool cmake git curl
   ```
 </details>
 <details>
