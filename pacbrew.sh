@@ -80,12 +80,20 @@ function install_remote_package {
   #&> /dev/null
 }
 
+# clean_package PKGPATH
+function clean_package {
+  pushd "$1" &> /dev/null || exit 1
+  rm -rf *.pkg.tar.* || exit 1
+  git clean -fd -x .
+  popd &> /dev/null || exit 1
+}
+
 # build_package PKGPATH ARCH
 function build_package {
   # build package
   pushd "$1" &> /dev/null || exit 1
-  rm -rf *.pkg.tar.xz &> /dev/null || exit 1
-  CARCH=$2 makepkg -C -f || exit 1
+  rm -rf *.pkg.tar.* &> /dev/null || exit 1
+  CARCH=$2 makepkg -C -f --clean || exit 1
   popd &> /dev/null || exit 1
 }
 
@@ -167,6 +175,8 @@ function build_packages {
           scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@$PACBREW_SSH_HOST:/var/www/pacbrew/packages/ || exit 1
           repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz || exit 1
         fi
+        # cleanup
+        clean_package "$line"
       else
         # always install deps for later packges build
         echo -e "${COL_GREEN}build_packages: $local_pkgname${COL_NONE} is up to date, installing if needed..."
