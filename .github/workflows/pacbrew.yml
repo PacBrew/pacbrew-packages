@@ -40,7 +40,7 @@ jobs:
           known_hosts: '# dummy'
       - name: Setting ssh for pacbrew user
         run: |
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> /root/.ssh/known_hosts
+          ssh-keyscan -t rsa ${{ secrets.SSH_HOST }} >> /root/.ssh/known_hosts
           cp -r /root/.ssh/. /home/pacbrew/.ssh/
           chown -R pacbrew:pacbrew /home/pacbrew/.ssh
       # Update pacbrew repo
