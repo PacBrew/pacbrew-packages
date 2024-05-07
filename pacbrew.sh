@@ -83,8 +83,8 @@ function install_remote_package {
 # clean_package PKGPATH
 function clean_package {
   pushd "$1" &> /dev/null || exit 1
-  rm -rf *.pkg.tar.* || exit 1
-  git clean -fd -x .
+  #rm -rf *.pkg.tar.* || exit 1
+  #git clean -fd -x .
   popd &> /dev/null || exit 1
 }
 
