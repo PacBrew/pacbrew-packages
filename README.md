@@ -14,11 +14,12 @@ PacBrew is a pacman based package manager for building and/or managing toolchain
   <summary>ubuntu 22.04 (manually install 24.04 debs)</summary>
   
   ```
+  sudo apt -y install libarchive-tools build-essential autoconf libtool cmake git curl
   wget http://launchpadlibrarian.net/635298936/libalpm13_13.0.2-3_amd64.deb
   wget http://launchpadlibrarian.net/635298938/pacman-package-manager_6.0.2-3_amd64.deb
   wget http://launchpadlibrarian.net/635298937/makepkg_6.0.2-3_amd64.deb
   sudo dpkg -i libalpm13_13.0.2-3_amd64.deb pacman-package-manager_6.0.2-3_amd64.deb makepkg_6.0.2-3_amd64.deb
-  sudo apt-get -y -f install
+  sudo apt -y -f install
   ```
 </details>
 
