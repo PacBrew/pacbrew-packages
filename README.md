@@ -32,7 +32,7 @@ PacBrew is a pacman based package manager for building and/or managing toolchain
   ```
   [pacbrew]
   SigLevel = Optional TrustAll
-  Server = http://pacbrew.mydedibox.fr/packages/
+  Server = https://pacman.mydedibox.fr/pacbrew/packages/
   ```
  - update pacman databases:
   ```
