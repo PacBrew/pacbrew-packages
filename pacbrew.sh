@@ -99,6 +99,7 @@ function build_package {
 
 function build_packages {
   PACBREW_SSH_HOST="mydedibox.fr"
+  PACBREW_SSH_PATH="/var/lib/docker/volumes/pacman_htdocs/_data/pacbrew/packages/"
   remote_packages=`pacman -Sl | grep pacbrew`
 
   # parse args
@@ -124,7 +125,7 @@ function build_packages {
   if [ $PACBREW_UPLOAD ]; then
     echo -e "${COL_GREEN}build_packages:${COL_NONE} downloading pacbrew repo..."
     rm -rf pacbrew-repo && mkdir -p pacbrew-repo
-    scp $PACBREW_SSH_USER@$PACBREW_SSH_HOST:/var/www/pacbrew/packages/pacbrew.* pacbrew-repo || exit 1
+    scp $PACBREW_SSH_USER@$PACBREW_SSH_HOST:$PACBREW_SSH_PATH/pacbrew.* pacbrew-repo || exit 1
   fi
 
   while read line; do
@@ -172,7 +173,7 @@ function build_packages {
         install_local_package $line/*.pkg.tar.xz
         if [ $PACBREW_UPLOAD ]; then
           echo -e "${COL_GREEN}build_packages:${COL_NONE} uploading ${COL_GREEN}$local_pkgname${COL_NONE} to pacbrew repo"
-          scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@$PACBREW_SSH_HOST:/var/www/pacbrew/packages/ || exit 1
+          scp $line/*.pkg.tar.xz $PACBREW_SSH_USER@$PACBREW_SSH_HOST:$PACBREW_SSH_PATH || exit 1
           repo-add pacbrew-repo/pacbrew.db.tar.gz $line/*.pkg.tar.xz || exit 1
         fi
         # cleanup
@@ -188,7 +189,7 @@ function build_packages {
   # upload updated repo files and cleanup
   if [ $PACBREW_UPLOAD ]; then
     echo -e "${COL_GREEN}build_packages:${COL_NONE} updating pacbrew repo with new packages..."
-    scp pacbrew-repo/* $PACBREW_SSH_USER@$PACBREW_SSH_HOST:/var/www/pacbrew/packages/ || exit 1
+    scp pacbrew-repo/* $PACBREW_SSH_USER@$PACBREW_SSH_HOST:$PACBREW_SSH_PATH || exit 1
     rm -rf pacbrew-repo
   fi
 
