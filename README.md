@@ -45,7 +45,8 @@ PacBrew is a pacman based package manager for building and/or managing toolchain
   ```
   - have a look at [PacBrew openorbis sample](https://github.com/PacBrew/ps4-openorbis-sample)
 
-#### Install dreamcast (KallistiOS) toolchain and portlibs (wip):
+#### Install dreamcast (KallistiOS) toolchain and portlibs (wip)
   ```
   sudo pacman -S dc-toolchain dc-portlibs
   ```
+  - have a look at [dreamcast KallistiOS sample](https://github.com/PacBrew/dc-sample)
