@@ -2,6 +2,9 @@
 
 set -e
 
+PACBREW_SSH_HOST="mydedibox.fr"
+PACBREW_SSH_PATH="/home/pacman/pacbrew/packages/"
+
 COL_GREEN='\033[0;32m'
 COL_NONE='\033[0m'
 
@@ -98,8 +101,6 @@ function build_package {
 }
 
 function build_packages {
-  PACBREW_SSH_HOST="mydedibox.fr"
-  PACBREW_SSH_PATH="/var/lib/docker/volumes/pacman_htdocs/_data/pacbrew/packages/"
   remote_packages=`pacman -Sl | grep pacbrew`
 
   # parse args
@@ -108,6 +109,9 @@ function build_packages {
     case "$1" in
       -f) echo -e "${COL_GREEN}build_packages${COL_NONE}: force rebuild all packages"
           PACBREW_BUILD_ALL=true
+        ;;
+      -p) shift && PACBREW_PACKAGES="$1"
+          echo -e "${COL_GREEN}build_packages${COL_NONE}: building packages: $1"
         ;;
       -u) echo -e "${COL_GREEN}build_packages${COL_NONE}: uploading packages to pacbrew repo with specified user"
           PACBREW_UPLOAD=true
@@ -132,6 +136,11 @@ function build_packages {
     # skip empty lines and comments
     if [ -z "$line" ] || [[ $line == \#* ]] ; then
       continue
+    fi
+
+    if [[ ${PACBREW_PACKAGES:-} != "" ]] && [[ $line != *$PACBREW_PACKAGES* ]] ; then
+        echo -e "${COL_GREEN}build_packages:${COL_NONE} skipping $line"
+        continue
     fi
 
     # set target arch
